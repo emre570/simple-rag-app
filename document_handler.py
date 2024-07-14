@@ -7,5 +7,7 @@ def load_docs(data_folder):
         os.makedirs(data_folder)
     
     doc_loader = PyPDFDirectoryLoader(data_folder)
-    return doc_loader.load()
+    
+    docs = doc_loader.load()
+    return docs
 
