@@ -46,12 +46,3 @@ while True:
     for line in conversation_history:
         print(line)
     print("\n----------------------------")
-
-"""question = "Who were the first and last rulers of Roman Empire?"
-
-retriever = retrieve_docs(question, vectorstore, similar_docs_count, see_content=False)
-
-rag_chain = setup_chain("llama3", retriever)
-
-for chunk in rag_chain.stream(question):
-    print(chunk, end="", flush=True)"""
