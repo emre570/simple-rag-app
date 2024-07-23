@@ -22,17 +22,23 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 1. Clone the repository:
 
-   `git clone https://github.com/yourusername/rag-conversational-app.git cd rag-conversational-app`
+   ```bash
+   git clone https://github.com/yourusername/rag-conversational-app.git cd rag-conversational-app
+   ```
 2. Install the required packages:
 
-   `pip install -r requirements.txt`
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ### Usage
 
 1. Place your PDF file(s) in the `data` folder.
 2. Run the application:
 
-   `python [path_to_app_folder]/app.py`
+   ```bash
+   python [path_to_app_folder]/app.py
+   ```
 3. Enter your questions when prompted. Type 'exit' to quit the application.
 
 ## WIP Features
