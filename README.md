@@ -17,19 +17,22 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 - Python 3.8 or higher
 - Required Python packages (see `requirements.txt`)
+- Ollama Installation with Llama 3 installed
 
 ### Installation
 
 1. Clone the repository:
-
    ```bash
-   git clone https://github.com/yourusername/rag-conversational-app.git 
+   git clone https://github.com/yourusername/rag-conversational-app.git
    cd rag-conversational-app
    ```
 2. Install the required packages:
-
    ```bash
    pip install -r requirements.txt
+   ```
+3. Install LLM using Ollama:
+   ```bash
+   ollama pull llama3
    ```
 
 ### Usage
@@ -51,7 +54,7 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and create a pull request with your changes. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! Please fork the repository and create a pull request with your changes. For changes or see any mistakes, please open an issue first to discuss what you would like to change.
 
 ## Contact
 
