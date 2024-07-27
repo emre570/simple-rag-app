@@ -1,3 +1,5 @@
-
+*.faiss
+*.pkl
 *.pyc
-/db
+*.json
+*.pdf
