@@ -55,7 +55,7 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 - [ ] **Web UI:** A web-based user interface for easier interaction.
 - [X] **Conversation Memory:** The app will remember previous interactions during runtime for better context handling.
 - [ ] **More Memory:** You will be able to navigate between sessions and continue the conversation.
-- [ ] **Model and Database Selection:** Ability to select different LLMs and vector databases based on user preference.
+- [ ] **Model Selection:** Ability to select different LLMs based on user preference.
 - [ ] **Support for Multiple Document Types:** Extend functionality to work with Powerpoint slides, markdown files, text files, and more.
 
 ## Contributing
