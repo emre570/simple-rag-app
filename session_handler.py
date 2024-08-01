@@ -40,8 +40,3 @@ def save_session_history(session_id: str):
         history_file = os.path.join(history_dir, f"{session_id}.json")
         with open(history_file, "w") as f:
             json.dump(messages, f, indent=2)
-
-"""# Function to save all chat histories
-def save_all_histories():
-    for session_id in store:
-        save_session_history(session_id)"""

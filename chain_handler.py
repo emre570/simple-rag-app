@@ -8,7 +8,7 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 def setup_chain(model_name, retriever):
-    llm = ChatOllama(model=model_name)
+    llm = ChatOllama(model=model_name, base_url="http://127.0.0.1:11434", keep_alive=-1)
     
     contextualize_q_system_prompt = (
         "Given a chat history and the latest user question "
