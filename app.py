@@ -1,6 +1,5 @@
 import os
 import uuid
-import streamlit as st
 from indexer import split_docs
 from embedder import call_embed_model
 from retriever import retrieve_docs
@@ -25,7 +24,7 @@ embeddings_model = call_embed_model(embed_model_name)
 
 vectorstore = init_db(chunks, embeddings_model, db_path, embeddings_model)
 
-add_db_docs(vectorstore, data_folder, embeddings_model)
+add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
 
 chat_history = []
 
