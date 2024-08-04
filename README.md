@@ -28,8 +28,8 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/rag-conversational-app.git
-   cd rag-conversational-app
+   git clone https://github.com/emre570/simple-rag-app.git
+   cd simple-rag-app
    ```
 2. Install the required packages:
    ```bash
