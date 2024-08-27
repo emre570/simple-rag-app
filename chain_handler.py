@@ -27,7 +27,6 @@ def setup_chain(model_name, retriever):
     history_aware_retriever = create_history_aware_retriever(
         llm, retriever, contextualize_q_prompt
     )
-
     ### Answer question ###
     system_prompt = (
         "You are an assistant for question-answering tasks. "

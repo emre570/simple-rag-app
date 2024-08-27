@@ -1,13 +1,8 @@
 # Simple RAG App
 
-## Announcements
-
-* The LLM now remembers your questions!
-* Sessions will be saved including your conversations. See "sessions" folder after exiting app.
-
 ## Overview
 
-This project is a part of my self-development Retrieval-Augmented Generation (RAG) application that allows users to ask questions about the content of a PDF files placed in folder. The app uses advanced NLP models and techniques to provide accurate answers based on the document's content. The application leverages Ollama, Llama 3-8B, LangChain, and FAISS for its operations.
+This project is a part of my self-development Retrieval-Augmented Generation (RAG) application that allows users to ask questions about the content of a PDF files placed in folder. The app uses techniques to provide accurate answers based on the document's content. The application leverages Ollama, Llama 3-8B, LangChain, and FAISS for its operations.
 
 ## Features
 
@@ -55,7 +50,6 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 - [ ] **Web UI:** A web-based user interface for easier interaction.
 - [X] **Conversation Memory:** The app will remember previous interactions during runtime for better context handling.
 - [ ] **More Memory:** You will be able to navigate between sessions and continue the conversation.
-- [ ] **Model Selection:** Ability to select different LLMs based on user preference.
 - [ ] **Support for Multiple Document Types:** Extend functionality to work with Powerpoint slides, markdown files, text files, and more.
 
 ## Contributing

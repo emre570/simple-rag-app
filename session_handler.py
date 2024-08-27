@@ -20,9 +20,9 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
                 history = ChatMessageHistory()
                 for msg in messages:
                     if msg['role'] == 'human':
-                        history.append_human_message(msg['content'])
+                        history.add_user_message(msg['content'])
                     elif msg['role'] == 'ai':
-                        history.append_ai_message(msg['content'])
+                        history.add_ai_message(msg['content'])
                 store[session_id] = history
         else:
             store[session_id] = ChatMessageHistory()

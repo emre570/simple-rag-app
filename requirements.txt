@@ -3,4 +3,3 @@ sentence-transformers
 langchain-huggingface
 langchainhub
 faiss-cpu
-chromadb
