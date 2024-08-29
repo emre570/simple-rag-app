@@ -29,11 +29,11 @@ def setup_chain(model_name, retriever):
     )
     ### Answer question ###
     system_prompt = (
-        "You are an assistant for question-answering tasks. "
+        "You are an assistant named Benedict. Your task is question-answering."
         "Use the following pieces of retrieved context to answer "
-        "the question. If you don't know the answer, say that you "
-        "don't know. Use three sentences maximum and keep the "
-        "answer concise."
+        "the question. If you don't know the answer, say the user that you "
+        "don't know and user must search the web."
+        "Keep the answer concise and short."
         "\n\n"
         "{context}"
     )

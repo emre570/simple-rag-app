@@ -26,7 +26,7 @@ vectorstore = init_db(chunks, embeddings_model, db_path, embeddings_model)
 
 add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
 
-chat_history = []
+chat_history = get_session_history(session_id)
 
 while True:
     question = input("\n Enter your question (or type 'exit' to quit): ")
@@ -38,7 +38,7 @@ while True:
     
     conversational_rag_chain = RunnableWithMessageHistory(
         rag_chain,
-        get_session_history,
+        lambda _: chat_history,
         input_messages_key="input",
         history_messages_key="chat_history",
         output_messages_key="answer",
@@ -55,7 +55,7 @@ while True:
             print(chunk['answer'], end="", flush=True)
             answer += chunk['answer']
             
-    chat_history.append(HumanMessage(content=question))
-    chat_history.append(AIMessage(content=answer))
+    chat_history.add_user_message(question)
+    chat_history.add_ai_message(answer)
     
     save_session_history(session_id)
