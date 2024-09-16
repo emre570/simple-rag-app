@@ -16,8 +16,6 @@ sessions_folder = os.path.join(current_directory, "sessions")
 data_folder = os.path.join(current_directory, "data")
 db_path = os.path.join(current_directory, "db")
 
-st.title("RAG App Web UI")
-
 #-----  SIDEBAR - FILE UPLOAD - PREVIOUS CONVERSATIONS  -----#
 jsons = [f for f in os.listdir(sessions_folder) if f.endswith('.json')]
 json_datas = []
@@ -28,6 +26,7 @@ for file in jsons:
         json_datas.append(data) 
 
 with st.sidebar:
+    st.title("RAG App Web UI")
     with st.container():
         st.header("File Upload")
 
@@ -51,17 +50,11 @@ with st.sidebar:
             
             st.success("Files uploaded and saved successfully!")
 
-        # Add a button to start a new conversation
+        # Start a new conversation
         if st.button("New Conversation"):
             st.session_state.session_id = str(uuid.uuid4())
-
-            # Generate a new session_id
             session_id = st.session_state.session_id
-
-            # Clear the conversation history in session state
             st.session_state.conversation = []
-
-            # Display a message confirming the reset
             st.success("New conversation started!")
                 
 #-----  CHAT INTERFACE  -----#

@@ -30,19 +30,28 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
    ```bash
    pip install -r requirements.txt
    ```
-3. Install LLM using Ollama:
+3. Download Ollama and install LLM using Ollama:
    ```bash
    ollama pull llama3
    ```
 
 ### Usage
 
-1. Place your PDF file(s) in the `data` folder.
+1. Place your PDF file(s) in the `data` folder or upload it from Web UI.
 2. Run the application:
+   Console:
 
    ```bash
    python [path_to_app_folder]/app.py
    ```
+
+   Web UI:
+
+   ```bash
+   streamlit run [path_to_app_folder]/webui.py
+   ```
+
+   Alternatively, you can open `webui.bat` file.
 3. Enter your questions when prompted. Type 'exit' to quit the application.
 
 ## WIP Features
