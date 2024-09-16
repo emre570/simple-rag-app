@@ -39,13 +39,6 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 1. Place your PDF file(s) in the `data` folder or upload it from Web UI.
 2. Run the application:
-   Console:
-
-   ```bash
-   python [path_to_app_folder]/app.py
-   ```
-
-   Web UI:
 
    ```bash
    streamlit run [path_to_app_folder]/webui.py
