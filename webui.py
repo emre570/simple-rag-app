@@ -3,11 +3,18 @@ import time
 import json
 import uuid
 import streamlit as st
-from rag_utils import split_docs, call_embed_model, retrieve_docs, init_db, add_db_docs, load_docs, setup_chain
+from indexer import split_docs
+from embedder import call_embed_model
+from retriever import retrieve_docs
+from chain_handler import setup_chain
 from session_handler import get_session_history, save_session_history
+from docs_db_handler import init_db, add_db_docs, load_docs
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
-session_id = str(uuid.uuid4())
+if 'session_id' not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
+    
+session_id = st.session_state.session_id
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 sessions_folder = os.path.join(current_directory, "sessions")
@@ -48,12 +55,26 @@ with st.sidebar:
                     with open(file_path, "wb") as f:
                         f.write(uploaded_file.getbuffer())
                 time.sleep(3)
-                
             
             st.success("Files uploaded and saved successfully!")
-            
+
+        # Add a button to start a new conversation
+        if st.button("New Conversation"):
+            st.session_state.session_id = str(uuid.uuid4())
+
+            # Generate a new session_id
+            session_id = st.session_state.session_id
+
+            # Clear the conversation history in session state
+            st.session_state.conversation = []
+
+            # Display a message confirming the reset
+            st.success("New conversation started!")
+
+#-----  MAIN APP LOGIC  -----#
 docs = load_docs(data_folder)
 chunks = split_docs(docs)
+print("docs vector")
 embeddings_model = call_embed_model(embed_model_name)
 vectorstore = init_db(chunks, embeddings_model, db_path, embeddings_model)
 add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
@@ -63,18 +84,24 @@ add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
 
+# Display the conversation history
+for message in st.session_state.conversation:
+    with st.chat_message(message["role"]):
+        st.write(message["message"])
+
 chat_history = get_session_history(session_id)
 
 print("prompt go")
 prompt = st.chat_input("Say something")
 
 if prompt:
-    st.session_state.conversation.append({"role": "human", "message": prompt})
+    print("prompt given")
     
     with st.chat_message("human"):
         st.write(prompt)
+        st.session_state.conversation.append({"role": "human", "message": prompt})
     
-    retriever = retrieve_docs(prompt, vectorstore, similar_docs_count = 5, see_content=False)
+    retriever = retrieve_docs(prompt, vectorstore, similar_docs_count=5, see_content=False)
     rag_chain = setup_chain("llama3", retriever)
     
     conversational_rag_chain = RunnableWithMessageHistory(
@@ -85,8 +112,8 @@ if prompt:
         output_messages_key="answer",
     )
     
-    answer = ""
     with st.chat_message("ai"):
+        answer = ""
         placeholder = st.empty()
               
         for response_chunk in conversational_rag_chain.stream(
@@ -98,5 +125,5 @@ if prompt:
             if 'answer' in response_chunk:
                 answer += response_chunk["answer"]
                 placeholder.write(answer)
-                
         st.session_state.conversation.append({"role": "ai", "message": answer})
+        save_session_history(session_id)

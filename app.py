@@ -1,13 +1,9 @@
 import os
 import uuid
-from indexer import split_docs
-from embedder import call_embed_model
-from retriever import retrieve_docs
-from chain_handler import setup_chain
 from session_handler import get_session_history, save_session_history
-from docs_db_handler import init_db, add_db_docs, load_docs
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.messages import AIMessage, HumanMessage
+from rag_utils import split_docs, call_embed_model, retrieve_docs, init_db, add_db_docs, load_docs, setup_chain
 
 session_id = str(uuid.uuid4())
 
@@ -59,11 +55,3 @@ while True:
     chat_history.add_ai_message(answer)
     
     save_session_history(session_id)
-    
-for message in st.session_state.conversation:
-        if message['role'] == 'human':
-            with st.chat_message("human"):
-                st.write(message['content'])
-        elif message['role'] == 'ai':
-            with st.chat_message("assistant"):
-                st.write(message['content'])
