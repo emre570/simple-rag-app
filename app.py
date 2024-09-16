@@ -59,3 +59,11 @@ while True:
     chat_history.add_ai_message(answer)
     
     save_session_history(session_id)
+    
+for message in st.session_state.conversation:
+        if message['role'] == 'human':
+            with st.chat_message("human"):
+                st.write(message['content'])
+        elif message['role'] == 'ai':
+            with st.chat_message("assistant"):
+                st.write(message['content'])

@@ -3,12 +3,8 @@ import time
 import json
 import uuid
 import streamlit as st
-from indexer import split_docs
-from embedder import call_embed_model
-from retriever import retrieve_docs
-from chain_handler import setup_chain
+from rag_utils import split_docs, call_embed_model, retrieve_docs, init_db, add_db_docs, load_docs, setup_chain
 from session_handler import get_session_history, save_session_history
-from docs_db_handler import init_db, add_db_docs, load_docs
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
 session_id = str(uuid.uuid4())
@@ -18,25 +14,9 @@ sessions_folder = os.path.join(current_directory, "sessions")
 data_folder = os.path.join(current_directory, "data")
 db_path = os.path.join(current_directory, "db")
 
+embed_model_name = "sentence-transformers/all-MiniLM-L12-v2"
+
 st.title("RAG App Web UI")
-
-#-----  CHAT INTERFACE  -----#
-# Use session state to store conversation
-if 'conversation' not in st.session_state:
-    st.session_state.conversation = []
-
-prompt = st.chat_input("Say something")
-if prompt:
-    st.session_state.conversation.append({'role': 'human', 'content': prompt})
-    st.session_state.conversation.append({'role': 'ai', 'content': "Hey!"})  # simulate AI response
-
-for message in st.session_state.conversation:
-    if message['role'] == 'human':
-        with st.chat_message("human"):
-            st.write(message['content'])
-    elif message['role'] == 'ai':
-        with st.chat_message("assistant"):
-            st.write(message['content'])
 
 #-----  SIDEBAR - FILE UPLOAD - PREVIOUS CONVERSATIONS  -----#
 jsons = [f for f in os.listdir(sessions_folder) if f.endswith('.json')]
@@ -69,36 +49,54 @@ with st.sidebar:
                         f.write(uploaded_file.getbuffer())
                 time.sleep(3)
                 
-            docs = load_docs(data_folder)
-            chunks = split_docs(docs)
-            embed_model_name = "sentence-transformers/all-MiniLM-L12-v2"
-            embeddings_model = call_embed_model(embed_model_name)
-            vectorstore = init_db(chunks, embeddings_model, db_path, embeddings_model)
-            add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
             
             st.success("Files uploaded and saved successfully!")
+            
+docs = load_docs(data_folder)
+chunks = split_docs(docs)
+embeddings_model = call_embed_model(embed_model_name)
+vectorstore = init_db(chunks, embeddings_model, db_path, embeddings_model)
+add_db_docs(vectorstore, data_folder, db_path, embeddings_model)
+                
+#-----  CHAT INTERFACE  -----#
+# Use session state to store conversation
+if 'conversation' not in st.session_state:
+    st.session_state.conversation = []
 
-    with st.container():
-        st.header("Previous Conversations")
-        for i in range(len(json_datas)):
-            if st.button(f"Show Conversation {i+1}"):
-                st.session_state.conversation = json_datas[i]
+chat_history = get_session_history(session_id)
 
-    # Move this to the bottom of the sidebar
-    with st.container():
-        st.header("Start a New Conversation")
-        if st.button("Start New Conversation"):
-            st.session_state.conversation = []  # Clear the current conversation
+print("prompt go")
+prompt = st.chat_input("Say something")
 
-# Display conversation
-if 'selected_conversation_index' in st.session_state:
-    st.subheader(f"Conversation {st.session_state.selected_conversation_index+1}")
-    for j, msg in enumerate(json_datas[st.session_state.selected_conversation_index]):
-        role = msg["role"]
-        content = msg["content"]
-        if role == "human":
-            with st.chat_message("user"):
-                st.write(content)
-        elif role == "ai":
-            with st.chat_message("ai"):
-                st.write(content)
+if prompt:
+    st.session_state.conversation.append({"role": "human", "message": prompt})
+    
+    with st.chat_message("human"):
+        st.write(prompt)
+    
+    retriever = retrieve_docs(prompt, vectorstore, similar_docs_count = 5, see_content=False)
+    rag_chain = setup_chain("llama3", retriever)
+    
+    conversational_rag_chain = RunnableWithMessageHistory(
+        rag_chain,
+        lambda _: chat_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
+    )
+    
+    answer = ""
+    with st.chat_message("ai"):
+        placeholder = st.empty()
+              
+        for response_chunk in conversational_rag_chain.stream(
+            {"input": prompt},
+            config={
+                "configurable": {"session_id": session_id}
+            },
+        ):
+            if 'answer' in response_chunk:
+                answer += response_chunk["answer"]
+                placeholder.write(answer)
+                
+        st.session_state.conversation.append({"role": "ai", "message": answer})
