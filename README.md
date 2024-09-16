@@ -6,9 +6,9 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 ## Features
 
-- **Ask Questions About PDFs:** Simply place a PDF file in the `data` folder and start asking questions about its content.
-- **Advanced NLP Models:** Utilizes Ollama and Llama 3-8B for generating responses.
-- **Efficient Document Retrieval:** Uses LangChain and FAISS for efficient document retrieval and processing.
+- **Ask Questions About PDFs:** Simply place a PDF file in the `data` folder or upload from Web UI and start asking questions about its content.
+- **LLM Models:** Utilizes Ollama and Llama 3-8B for generating responses.
+- **Efficient Document Retrieval:** Uses LangChain and FAISS for efficient document retrieval and processing (PDF Only).
 - **Duplicate Handling:** The app checks the vector database for duplicates and avoids adding them if they already exist.
 
 ## Getting Started
@@ -47,9 +47,8 @@ This project is a part of my self-development Retrieval-Augmented Generation (RA
 
 ## WIP Features
 
-- [ ] **Web UI:** A web-based user interface for easier interaction.
+- [X] **Web UI:** A web-based user interface for easier interaction.
 - [X] **Conversation Memory:** The app will remember previous interactions during runtime for better context handling.
-- [ ] **More Memory:** You will be able to navigate between sessions and continue the conversation.
 - [ ] **Support for Multiple Document Types:** Extend functionality to work with Powerpoint slides, markdown files, text files, and more.
 
 ## Contributing
